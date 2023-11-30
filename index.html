@@ -4,8 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h6>Hello world!</h6>
+    <div class="container">
+    <form onsubmit="alert('hello')">
+        <label>
+            <p>Username</p>
+            <input type="text" placeholder="Username" value="" name="Username" id="" required>
+        </label>
+        <label>
+            <p>Password</p>
+            <input type="password" name="password" placeholder="Password" id="" required>
+        </label>
+        <br>
+        <div class="validator" id="validators">
+            <li class="lowercase" id="lowercase">lowercase</li>
+            <li class="uppercase" id="uppercase">uppercase</li>
+            <li class="number" id="number">number</li>
+            <li class="characternum" id="characternum">minimum 8 character</li>
+        </div>
+        <button type="submit">Validate</button>
+    </form>
+    </div>
 </body>
+<script src="./index.js"></script>
 </html>
