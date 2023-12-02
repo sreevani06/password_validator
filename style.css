@@ -16,13 +16,15 @@ form{
     background-color: #3bc1ab ;
     padding: 15px;
     border-radius: 20px;
-    transform: translate(0%,50%);
+    margin-top: 30px;
+    width: 20pc;
 }
 button{
     border-radius: 5px;
     width:inherit;
 }
 input{
+    width: 100%;
     height: 20px;
 }
 button{
@@ -37,6 +39,12 @@ button{
     flex-direction: column;
     font-size: large;
     font-family: 'Times New Roman', Times, serif;
-    list-style-image: url(./images/plus-lg.svg);
+}
+.valid{
+    color: green;
+}
+.invalid{
     color: red;
+    list-style-image: url(./images/plus-lg.svg);
+
 }

@@ -5,28 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        let ps = document.getElementById('password').value
+            let lowercase = document.getElementById('lowercase')
+            let uppercase = document.getElementById("uppercase");
+            let number = document.getElementById("number");
+            let length = document.getElementById("length");
+
+            ps.onchange = function () {
+                // Validate lowercase letters
+                var lowerCaseLetters = /[a-z]/g;
+                if (ps.value.match(lowerCaseLetters)) {
+                    lowercase.classList.add("valid");
+                } else {
+                    letter.classList.remove("valid");
+                    letter.classList.add("invalid");
+                }
+                var upperCaseLetters = /[A-Z]/g;
+                if (myInput.value.match(upperCaseLetters)) {
+                    uppercase.classList.add("valid");
+                } else {
+                    upper.classList.remove("valid");
+                    upper.classList.add("invalid");
+                }
+                // Validate numbers
+                var numbers = /[0-9]/g;
+                if (myInput.value.match(numbers)) {
+                    number.classList.add("valid");
+                } else {
+                    number.classList.remove("valid");
+                    number.classList.add("invalid");
+                }
+                // Validate length
+                if (myInput.value.length >= 8) {
+                    length.classList.remove("invalid");
+                    length.classList.add("valid");
+                } else {
+                    length.classList.remove("valid");
+                    length.classList.add("invalid");
+                }
+            }
+    </script>
 </head>
 <body>
     <div class="container">
-    <form onsubmit="">
+    <form onsubmit="" id="form">
+        <p id="error"></p>
         <label>
-            <p>Username</p>
-            <input type="text" placeholder="Username" value="" name="Username" id="username" required>
+            <p>Email</p>
+            <input type="email" placeholder="Email" value="" name="Email" id="email" required>
         </label>
         <label>
             <p>Password</p>
-            <input onchange="checkPassword()" type="password" name="password" placeholder="Password" id="password" value="" required>
+            <input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" name="password" placeholder="Password" id="password" value="" required>
         </label>
         <br>
+        <p>Password must contain:</p>
         <div class="validator" id="validators">
-            <li class="lowercase" id="lowercase">lowercase</li>
-            <li class="uppercase" id="uppercase">uppercase</li>
-            <li class="number" id="number">number</li>
-            <li class="characternum" id="characternum">minimum 8 character</li>
+            <li class="invalid" id="lowercase">lowercase</li>
+            <li class="invalid" id="uppercase">uppercase</li>
+            <li class="invalid" id="number">number</li>
+            <li class="invalid" id="length">minimum 8 character</li>
         </div>
-        <button type="submit">Validate</button>
+        <button type="submit" id="submit">Create account</button>
+        <button type="submit" id="create">sign in</button>
     </form>
     </div>
 </body>
-<script src="./index.js"></script>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyAnNeig0emVV-WLcABWIKDQX2KwpV7fGzg",
+        authDomain: "login-page-6d51a.firebaseapp.com",
+        projectId: "login-page-6d51a",
+        storageBucket: "login-page-6d51a.appspot.com",
+        messagingSenderId: "221193584748",
+        appId: "1:221193584748:web:f5ffc63c2338ce32ee9849",
+        measurementId: "G-E7TM0S09T9"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth();
+
+    document.getElementById('create').addEventListener('click', (e) => {
+            e.preventDefault()
+            let email = document.getElementById("email").value
+            let password = document.getElementById("password").value
+            signInWithEmailAndPassword(auth,email,password).then((auth)=>{
+                alert("signed in")
+            }).catch((error)=>{
+                document.getElementById("error").innerText = error.code
+            })
+        })
+    document.getElementById('submit').addEventListener('click',(e)=>{
+        e.preventDefault()
+        let email=document.getElementById("email").value
+        let password=document.getElementById("password").value
+        createUserWithEmailAndPassword(auth,email,password).then((auth)=>{
+            sendEmailVerification(auth.user)
+            alert("user created")
+        }).catch((error)=>{
+            document.getElementById("error").innerText=error.code
+        })
+    })    
+    
+</script>
 </html>
